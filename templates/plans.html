@@ -1,0 +1,18 @@
+{% extends "profile_base.html" %}
+
+{% block content %}
+
+<h1>Your Daily Workout Plan for {{ daily_plan.date }}</h1>
+
+    <h3>Workouts:</h3>
+    <ul>
+        {% for workout in daily_plan.workouts %}
+            <li>
+                <strong>Name:</strong> {{ workout.name }} <br>
+                <strong>Category:</strong> {{ workout.category }} <br>
+                <strong>Description:</strong> {{ workout.description }} <br>
+                <strong>Duration:</strong> {{ workout.duration }} minutes
+            </li>
+        {% endfor %}
+            <a href="{% url 'edit_workout_plan' %}">Add a new workout</a>
+{% endblock %}
