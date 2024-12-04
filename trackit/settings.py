@@ -42,11 +42,12 @@ INSTALLED_APPS = [
     
     'crispy_forms',
      'crispy_bootstrap5',
-
+     
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,11 +123,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT= BASE_DIR /'static'
-STATICFILES_DIRS=[
-    'trackit/static',
-]
+STATIC_URL = '/trackit/static/'
+STATIC_ROOT= BASE_DIR /'staticfiles'
+print(BASE_DIR)
+# STATICFILES_DIRS=[
+#     'trackit/static',
+# ]
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL="/dashboard"
 LOGOUT_REDIRECT_URL="/"

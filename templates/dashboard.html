@@ -33,10 +33,12 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-auto">
             <a class="nav-link active h4" aria-current="page" href="dashboard.html">Home</a>
-            <a class="nav-link h4" href="#">Features</a>
+            <a class="nav-link h4" href="{% url 'plans' %}">plans</a>
             <a class="nav-link h4" href="#">Pricing</a>
             <a class="nav-link h4" href="#">Disabled</a>
-            <a class="nav-link" href="{% url 'update_profile'%}"><div style="border: solid rgb(131, 131, 131) 2px; border-radius: 50%;"><img src="{{ request.user.profile.profile_image.url }}" alt="default image" width="30" ></a></div>
+            {% if  profile.profile_image %}
+            <a class="nav-link" href="{% url 'update_profile'%}"><div style="border: solid rgb(131, 131, 131) 2px; border-radius: 50%;"><img src="{{profile.profile_image.url }}" alt="default image" width="30" ></a></div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -45,13 +47,16 @@
   
     
     <main>
-      <h1 class="display-2 ms-2 my-5">Hello <span><strong>{{ users.username }}</strong></span></h1>
-      {% for workout in user.userworkoutplan_set.all %}
+      
+      <h1 class="display-2 ms-2 my-5">Hello <span><strong>{{ request.user.username }}</strong></span></h1>
+      <h1>{{ workout_plan }}
+      {% for workout in workouts %}
+
     <div>
-        <h4>{{ workout.workout_name }} - {{ workout.date }}</h4>
-        <p>Category: {{ workout.category }}</p>
-        <p>Description: {{ workout.description }}</p>
-        <p>Duration: {{ workout.duration }} mins</p>
+        
+        <ul>
+          <li> {{ workout.name }}</li>
+        </ul>
         <p>Completed: {% if workout.completed %}Yes{% else %}No{% endif %}</p>
         <a href="{% url 'edit_workout_plan' workout.id %}">Edit</a>
     </div>

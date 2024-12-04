@@ -2,17 +2,29 @@
 
 {% block content %}
 
-<h1>Your Daily Workout Plan for {{ daily_plan.date }}</h1>
-
+<h1>Your Daily Workout Plan for {{ user_workout_plan }}</h1>
+    {% if user_workout_plan.completed == False %}
+    <form action={% url 'mark_workout_completed' user_workout_plan.id %} method= 'POST'> 
+        {% csrf_token %}
+        
+        <button type='submit'>
+            Complete plan
+        </button>
+    </form>
+    {% else%}
+    <h3> This paln has been completed</h3>
+    {% endif %}
     <h3>Workouts:</h3>
     <ul>
-        {% for workout in daily_plan.workouts %}
+        {% for workout in workouts %}
             <li>
                 <strong>Name:</strong> {{ workout.name }} <br>
-                <strong>Category:</strong> {{ workout.category }} <br>
+                
                 <strong>Description:</strong> {{ workout.description }} <br>
                 <strong>Duration:</strong> {{ workout.duration }} minutes
+                
             </li>
+            
         {% endfor %}
-            <a href="{% url 'edit_workout_plan' %}">Add a new workout</a>
+        <a href="{% url 'edit_workout_plan' workout.id %}">Add a new workout</a>
 {% endblock %}

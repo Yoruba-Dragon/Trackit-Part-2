@@ -27,10 +27,11 @@ def generate_daily_workout(user):
     # Create a daily plan
     daily_plan = {
         "date": date.today(),
+        "intensity": intensity,
         "workouts": [
             {
                 "name": workout.name,
-                "category": workout.category.name,
+                # "category": workout.category.name,
                 "description": workout.description,
                 "duration": workout.duration,
             }

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from datetime import date
 from django.db.models.signals import post_save
-class Goal(models.Model):
+class Goal(models.Model):# goals model
          
     title = models.CharField(max_length=30)
     description = models.TextField(max_length=255)
@@ -15,7 +15,7 @@ class Goal(models.Model):
 
 
 
-class Profile(models.Model):
+class Profile(models.Model):# profile model
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, null=True, blank=True)
     date_of_birth= models.DateField(null=True, blank=True)
@@ -36,13 +36,13 @@ class Profile(models.Model):
         return f"Profile of {self.user.email}"
 
     @property
-    def bmi(self):
+    def bmi(self):# bmi calculator
         if self.weight and self.height:
             height_in_meters = self.height / 100
             return round(self.weight / (height_in_meters ** 2), 2)
         return 0.0
     @property
-    def age(self):
+    def age(self):# age calculator
         if self.date_of_birth:
             today = date.today()
             return today.year - self.date_of_birth.year - (

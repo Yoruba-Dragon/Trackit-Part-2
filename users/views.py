@@ -15,18 +15,22 @@ from django.contrib.auth.models import User
 from .models import Profile
 from workout.models import UserWorkoutPlan
 from datetime import date
+from django.shortcuts import get_object_or_404
 
-
-def home(request):
+def home(request):# renders the homepage
     return render(request, 'home.html')
-def dashboard(request):
+def dashboard(request):# dashboard
     if request.user.is_authenticated:
-        workouts = UserWorkoutPlan.objects.filter(user=request.user, date=date.today())
-        return render(request, 'dashboard.html', {'workouts': workouts})
+        
+        profile = get_object_or_404(Profile, user=request.user)
+        workout_plan= UserWorkoutPlan.objects.filter(user=profile, date_created=date.today())
+        workouts = UserWorkoutPlan.objects.filter(user=profile, date_created=date.today())
+        context= {'workouts': workouts, 'profile': profile}
+        return render(request, 'dashboard.html', context)
     return redirect('login')
     
 
-def user_signup(request):
+def user_signup(request):# user signup logic
     form = SignUpForm()
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -60,7 +64,7 @@ def user_logout(request):
     return redirect('login')
 
 @login_required
-def password_change(request):
+def password_change(request): # change password
     if request.method == 'POST':
         form = PasswordChangingForm(request.user, request.POST)
         if form.is_valid():
@@ -74,12 +78,12 @@ def password_change(request):
 
 
 @login_required
-def profile(request):
+def profile(request):# function to create profile each time you create a user
     user=request.user
     
     profiles = Profile.objects.filter(user=request.user)
     if profiles.exists():
-        profile = profiles 
+        profiles = get_object_or_404(Profile, user=request.user)
     else:
         profile=None
 
@@ -88,12 +92,12 @@ def profile(request):
     return render(request, 'profile.html',{'user':user, 'profile': profiles})
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_user_profile(sender, instance, created, **kwargs):
+def create_user_profile(sender, instance, created, **kwargs):# function to create profile each time you create a user
     if not created:
         Profile.objects.create(user=instance)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def save_user_profile(sender, instance, **kwargs):
+def save_user_profile(sender, instance, **kwargs):# saves user profile
     try:
         profile = Profile.objects.get(user=instance.id)
         if profile:
@@ -102,7 +106,7 @@ def save_user_profile(sender, instance, **kwargs):
         pass
 
 @login_required
-def update_profile(request):
+def update_profile(request):# update profile form
     
     profile, created = Profile.objects.get_or_create(user=request.user)
 

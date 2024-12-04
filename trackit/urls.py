@@ -33,6 +33,8 @@ urlpatterns = [
     path('profile/update/', user_views.update_profile, name='update_profile'),
     path('dashboard', user_views.dashboard, name='dashboard'),
     path('edit_workout_plan/<int:workout_id>/', views.edit_workout_plan, name='edit_workout_plan'),
+    path('plans', views.plans, name='plans'),
+    path('mark_workout_completed/<int:workout_id>/', views.mark_workout_completed, name='mark_workout_completed')
     
     ]
 
